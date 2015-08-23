@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bijit/form/CheckBoxList</title>
+    <script src="./dojoInclude.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+    <script>
+
+        require([
+            "bijit/form/CheckBoxList",
+            "dojo/domReady!"
+        ], function(
+            CheckBoxList
+        ){
+
+            var cbl = new CheckBoxList({
+                label : "Custom CheckBoxList"
+            }, "cblNode");
+
+        });
+
+    </script>
+</head>
+<body>
+    <div id="cblNode"></div>
+</body>
+</html>
