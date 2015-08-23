@@ -1,0 +1,12 @@
+.cbl .dgrid-grid {
+    width: 150px;
+    height: 300px;
+}
+.cbl .dgrid-cell.dgrid-selector {
+    width: 25px;
+}
+.cbl .dgrid-cell.field-value {
+    width: 125px;
+}
+
+

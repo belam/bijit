@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>bijit/form/CheckBoxList</title>
-    <!--
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/resources/dojo.css">
-    -->
+    <link rel="stylesheet" href="./styles/bijit-demo.css">
+
+    <style>
+        .lft {
+            float: left;
+        }
+        .demoControls {
+            margin-left: 20px;
+            margin-top: 50px;
+        }
+        .txtArea {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+
     <script src="./util/dojoInclude.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
     <script>
 
         require([
+            "dojo/dom",
+            "dojo/json",
             "dojo/store/Memory",
+            "dojo/on",
             "bijit/form/CheckBoxList",
             "bijit/demos/util/DeferredWrapper",
             "dojo/domReady!"
         ], function(
-            Memory, CheckBoxList, DeferredWrapper
+            dom, json, Memory, on, CheckBoxList, DeferredWrapper
         ){
             var i, data = [], date = new Date();
             for (i=0; i<200; i++){
@@ -36,13 +52,36 @@
                 title : "Custom CheckBoxList",
                 labelField : "value",
                 store : DeferredWrapper(store, 1)
-            }, "cblNode");
+            }, "cbl");
+
+            on(dom.byId("btnGetValue"), "click", function(){
+                var txtArea = dom.byId("txtArea"),
+                    val = cbl.get("value");
+
+                txtArea.innerHTML = json.stringify(val);
+                console.log(val);
+            });
 
         });
 
     </script>
 </head>
 <body>
-    <div id="cblNode"></div>
+    <div class="demoWrapper">
+        <div class="lft">
+            <div class="lft" id="cbl"></div>
+        </div>
+        <div class="lft demoControls">
+            <table>
+                <tr>
+                    <td><button id="btnGetValue">Get Value</button></td>
+                </tr>
+                <tr>
+                    <td><textarea class="txtArea" id="txtArea"></textarea></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>
