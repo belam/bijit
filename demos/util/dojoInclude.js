@@ -7,7 +7,7 @@ var dojoConfig = {
         },
         {
             name : "dgrid",
-            location : "https://cdn.rawgit.com/SitePen/dgrid/v0.4.0"
+            location : "https://cdn.rawgit.com/SitePen/dgrid/v0.3.17"
         },
         {
             name : "xstyle",

@@ -3,19 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>bijit/form/CheckBoxList</title>
-    <script src="./dojoInclude.js"></script>
+    <!--
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/resources/dojo.css">
+    -->
+    <script src="./util/dojoInclude.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
     <script>
 
         require([
+            "dojo/store/Memory",
             "bijit/form/CheckBoxList",
+            "bijit/demos/util/DeferredWrapper",
             "dojo/domReady!"
         ], function(
-            CheckBoxList
+            Memory, CheckBoxList, DeferredWrapper
         ){
+            var i, data = [], date = new Date();
+            for (i=0; i<200; i++){
+                date.setDate(date.getDate()+1);
+                data.push({
+                    key : i,
+                    value : date.toLocaleDateString()
+                });
+            }
+
+            var store = new Memory({
+                idProperty : "key",
+                data : data
+            });
 
             var cbl = new CheckBoxList({
-                label : "Custom CheckBoxList"
+                title : "Custom CheckBoxList",
+                labelField : "value",
+                store : DeferredWrapper(store, 1)
             }, "cblNode");
 
         });
