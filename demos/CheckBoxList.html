@@ -26,13 +26,14 @@
         require([
             "dojo/dom",
             "dojo/json",
+            "dojo/store/JsonRest",
             "dojo/store/Memory",
             "dojo/on",
             "bijit/form/CheckBoxList",
             "bijit/demos/util/DeferredWrapper",
             "dojo/domReady!"
         ], function(
-            dom, json, Memory, on, CheckBoxList, DeferredWrapper
+            dom, json, JsonRest, Memory, on, CheckBoxList, DeferredWrapper
         ){
             var i, data = [], date = new Date();
             for (i=0; i<200; i++){
@@ -43,23 +44,38 @@
                 });
             }
 
-            var store = new Memory({
-                idProperty : "key",
-                data : data
+            var jr = new JsonRest({
+                target : "./data/treeData.json"
             });
 
-            var cbl = new CheckBoxList({
-                title : "Custom CheckBoxList",
-                labelField : "value",
-                store : DeferredWrapper(store, 1)
-            }, "cbl");
+            jr.query({}).then(function(results){
 
-            on(dom.byId("btnGetValue"), "click", function(){
-                var txtArea = dom.byId("txtArea"),
-                    val = cbl.get("value");
+                var store = new Memory({
+                    idProperty : "key",
+                    data : results,
+                    mayHaveChildren : function(item){
+                        console.log(arguments);
+                        return item.type === "base";
+                    },
+                    shouldExpand : function(item){
+                        console.log(arguments);
+                    }
+                });
 
-                txtArea.innerHTML = json.stringify(val);
-                console.log(val);
+                var cbl = new CheckBoxList({
+                    title : "Custom CheckBoxList",
+                    labelField : "label",
+                    baseQuery : {type : "base"},
+                    store : DeferredWrapper(store, 1)
+                }, "cbl");
+
+                on(dom.byId("btnGetValue"), "click", function(){
+                    var txtArea = dom.byId("txtArea"),
+                        val = cbl.get("value");
+
+                    txtArea.innerHTML = json.stringify(val);
+                    console.log(val);
+                });
             });
 
         });

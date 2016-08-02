@@ -4,11 +4,12 @@ define([
     "dgrid/OnDemandGrid",
     "dgrid/Selection",
     "dgrid/selector",
+    "dgrid/tree",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetBase",
     "dojo/text!./templates/CheckBoxList.html"
 ], function(
-    declare, Memory, Grid, Selection, selector, TemplatedMixin, WidgetBase, template
+    declare, Memory, Grid, Selection, selector, Tree, TemplatedMixin, WidgetBase, template
 ){
 
     return declare("bijit.form.CheckBoxList", [WidgetBase, TemplatedMixin], {
@@ -21,22 +22,30 @@ define([
         labelField : "label",
         title : "",
         label : "",
+        baseQuery : null,
 
         postCreate : function(){
             if (!this.store){
                 // OnDemandGrid requires a store, so default it to a Memory if not provided.
                 this.store = new Memory();
             }
+            if (!this.baseQuery){
+                this.baseQuery = {};
+            }
             this._buildGrid();
             this.inherited(arguments);
         },
 
         _buildGrid : function(){
-            this.grid = new (declare([Grid, Selection]))({
+            this.grid = new (declare([Grid, Selection, Tree]))({
                 selectionMode : "none",
                 allowSelectAll : this.allowSelectAll,
                 store : this.store,
-                columns : this._buildColumns()
+                query : this.baseQuery,
+                columns : this._buildColumns(),
+                shouldExpand : function(item){
+                    console.log(arguments);
+                }
             }, this.gridNode);
         },
 
